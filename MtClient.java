@@ -54,7 +54,7 @@ public class MtClient {
         serverOutput.writeBytes(data + "\n");
         if (data.equalsIgnoreCase("Goodbye")) {
           System.out.println("Disconnecting from the server...");
-          break;  // Exit the loop and allow the client to close gracefully
+          break;
         }
       }
       connectionSock.close();

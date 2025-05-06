@@ -25,26 +25,26 @@ public class ClientListener implements Runnable {
    * Gets message from server and dsiplays it to the user.
    */
   public void run() {
-    try {
-      BufferedReader serverInput = new BufferedReader(
-          new InputStreamReader(connectionSock.getInputStream()));
-      while (true) {
-        // Get data sent from the server
-        String serverText = serverInput.readLine();
-        if (serverInput != null) {
-          System.out.println(serverText);
-        } else {
-          // Connection was lost
-          System.out.println("Closing connection for socket " + connectionSock);
-          // connectionSock.close();
-          break;
-        }
+    try (BufferedReader serverInput = new BufferedReader(
+            new InputStreamReader(connectionSock.getInputStream()))) {
+
+      String serverText;
+      while ((serverText = serverInput.readLine()) != null) {
+        System.out.println(serverText);
       }
-    } catch (Exception e) {
+      // Connection was lost
+      System.out.println("Closing connection for socket " + connectionSock);
+      // If readLine() returns null, server closed the connection
+      System.out.println("Server has closed the connection. Program shutting down...");
       if (!connectionSock.isClosed()) {
-        System.out.println("Error: " + e.toString());
+        connectionSock.close();
       }
-      // System.out.println("Error: " + e.toString());
+      System.exit(0);  // Optional: exit the whole client program
+
+    } catch (IOException e) {
+      if (!connectionSock.isClosed()) {
+        System.out.println("Connection error: " + e.getMessage());
+      }
     }
   }
 } // ClientListener for MtClient

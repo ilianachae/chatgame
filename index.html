@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Multithreaded Chat Launcher</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f0f0f0;
+    }
+    button {
+      font-size: 20px;
+      padding: 10px 30px;
+      margin: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Multithreaded Chat System</h1>
+  <p>Select your role:</p>
+  <button onclick="startRole('server')">Start Server</button>
+  <button onclick="startRole('client')">Start Client</button>
+
+  <script>
+    function startRole(role) {
+      fetch(`/start?role=${role}`)
+        .then(response => response.text())
+        .then(data => alert(data))
+        .catch(error => alert("Error: " + error));
+    }
+  </script>
+</body>
+</html>
